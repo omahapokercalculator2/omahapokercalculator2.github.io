@@ -1,0 +1,162 @@
+.b24-widget-button-wrapper .b24-widget-button-openline_livechat {
+  background-color: #e51e25 !important;
+}
+
+.b24-widget-button-wrapper .b24-widget-button-inner-mask {
+  border: 1px solid #e51e25 !important;
+  background-color: transparent !important;
+  opacity: 1 !important;
+}
+
+.b24-widget-button-wrapper .b24-widget-button-pulse {
+  border: 1px solid #e51e25 !important;
+}
+
+.b24-widget-button-wrapper .b24-widget-button-inner-block {
+  background-color: #e51e25 !important;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-title {
+  margin: 0 0 40px;
+  color: #282828;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 24px;
+  opacity: 1;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-title-lg {
+  color: #282828;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 24px;
+  letter-spacing: initial;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-subtitle {
+  margin: 40px 0 0;
+  color: #282828;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-user .bx-livechat-user {
+  margin: 0 18px;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-user .bx-livechat-user:nth-child(2) .bx-livechat-user-icon {
+  background-color: #000;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-user .bx-livechat-user:nth-child(3) .bx-livechat-user-icon {
+  background-color: #f1c259;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-user .bx-livechat-user-icon {
+  margin: 0 0 2px;
+  border: 1px solid #d9d9d9;
+  background-color: #fff;
+  background-image: url(/nimg/bitrix-gtplus.svg) !important;
+  background-position: 50%;
+  background-size: 33px;
+}
+
+.bx-livechat-wrapper .bx-livechat-help-user .bx-livechat-user-name {
+  color: #282828;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.bx-livechat-wrapper .bx-livechat-body {
+  background-color: #fafafa;
+  background-image: url(/nimg/chat-bg1920-015.png);
+  background-size: 600px;
+}
+
+.bx-livechat-wrapper .bx-im-dialog-group-date {
+  border: 0;
+  border-radius: 20px;
+  background-color: rgba(40, 40, 40, .5);
+  font-family: Roboto, Arial, sans-serif;
+  line-height: 20px;
+}
+
+.bx-livechat-wrapper .bx-imopenlines-message-dialog-number {
+  margin: 0;
+  padding: 10px 15px 0;
+  color: #6d6d6d;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.bx-livechat-wrapper .bx-im-message {
+  margin: 10px 0 15px;
+}
+
+.bx-livechat-wrapper .bx-im-message-without-menu.bx-im-message-type-opponent {
+  margin-right: 30px;
+}
+
+.bx-livechat-wrapper .bx-im-message-without-menu {
+  margin-right: 15px;
+}
+
+.bx-livechat-wrapper .bx-im-message-without-avatar {
+  margin-left: 15px;
+}
+
+.bx-livechat-wrapper .bx-im-message-content {
+  margin-bottom: 8px;
+  padding: 9px 20px;
+  border: 1px solid #d2d2d2;
+  border-radius: 10px;
+  background-color: #ddf5e0;
+  box-shadow: none;
+  color: #6d6d6d;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.bx-livechat-wrapper .bx-im-message-content-name {
+  color: #e51e25 !important;
+}
+
+.bx-livechat-wrapper .bx-im-message-type-opponent .bx-im-message-content {
+  border: 1px solid #d2d2d2;
+}
+
+.bx-livechat-wrapper .bx-im-message-content-date {
+  color: #9a9a9a;
+  font-family: Roboto, Arial, sans-serif;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.bx-livechat-wrapper .ui-vue-reaction-button-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.bx-livechat-wrapper .ui-vue-reaction-icon-like {
+  border: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cg clip-path='url(%23a)'%3E%3Cpath fill='%23A0D3A7' stroke='%23FCFCFC' d='M19.5 10a9.5 9.5 0 1 1-19 0 9.5 9.5 0 0 1 19 0Z'/%3E%3Cpath fill='%23fff' fill-rule='evenodd' d='M14.566 8.253H12.06a.182.182 0 0 1-.169-.107 1.137 1.137 0 0 1 .015-.881 3.235 3.235 0 0 0 .069-1.875c-.17-.425-.216-1.202-1.002-1.238a.81.81 0 0 0-.584.4.256.256 0 0 0-.031.127c.024.503.024.929 0 1.278-.037.524-1.04 1.86-1.678 2.708a.249.249 0 0 1-.163.1c-.239.035-.695.096-.86.117-.038.005-.06.054-.06.076v4.756c0 .018.02.056.058.062.129.021.451.08.776.185.409.131.749.441 1.43.671a.358.358 0 0 0 .113.019h3.197a.906.906 0 0 0 .742-.85 1.57 1.57 0 0 0-.138-.685c-.014-.03.004-.063.037-.07.41-.074.923-.852.292-1.48-.017-.015-.014-.038.008-.043a.963.963 0 0 0 .697-.714.768.768 0 0 0-.02-.4c-.046-.154-.12-.3-.217-.43-.025-.032-.01-.074.028-.087a.864.864 0 0 0 .583-.825c.04-.37-.257-.813-.617-.814Zm-7.95.2H4.802a.15.15 0 0 0-.15.175l1.053 5.913a.192.192 0 0 0 .19.157h.67a.185.185 0 0 0 .188-.183l.014-5.911a.152.152 0 0 0-.153-.15Z' clip-rule='evenodd'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='a'%3E%3Cpath fill='%23fff' d='M0 0h20v20H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A");
+}
+
+.bx-livechat-wrapper .bx-im-message-content-reaction .ui-vue-reaction {
+  margin-top: -2px;
+}
+
+.bx-livechat-wrapper .bx-im-textarea {
+  border-color: #d2d2d2;
+}
+
+.bx-livechat-wrapper .bx-im-textarea-input {
+  font-family: Roboto, Arial, sans-serif;
+}
+
+.bx-livechat-wrapper .bx-im-textarea-send-button {
+  background-color: #000 !important;
+}

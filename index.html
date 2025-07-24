@@ -1,11 +1,1862 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Omaha Odds Calculator</title>
+  <!-- Nhúng VueJS từ CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    .counter {
+      margin-top: 20px;
+    }
+
+    .page-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: white;
+      z-index: 9999;
+
+      /* Căn giữa nội dung bên trong */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lds-ring,
+    .lds-ring div {
+      box-sizing: border-box;
+    }
+
+    .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border: 8px solid currentColor;
+      border-radius: 50%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: currentColor transparent transparent transparent;
+    }
+
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+  <link href="app-site.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="tables.css" media="all" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="bitrix.css" />
+  <link rel="stylesheet" href="calc.css" />
+  <link rel="stylesheet" href="article-widgets.css" />
+
 </head>
+
 <body>
-    day la wwebs
+  <div class="page-overlay" id="page-overlay">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <div class="app-site" id="app">
+    <!--  -->
+    <div class="content" id="pjax-container">
+      <main class="content">
+        <div class="clc-header">
+          <div class="clc-header__inner">
+            <div class="clc-header__title">
+              Omaha Odds Calculator
+            </div>
+            <!-- <div class="clc-header__text">
+              Why is calculating equity and outs important in poker? How can
+              we determine the odds? <br />Introducing the Poker Odds
+              Calculator.
+            </div> -->
+          </div>
+        </div>
+        <div class="clc-game">
+           <div class="clc-header clc-header_mobile">
+          <div class="clc-header__inner">
+            <div class="clc-header__title">
+              Omaha Odds Calculator 
+            </div>
+            <div class="clc-header__text">
+              Why is calculating equity and outs important in poker? How can
+              we determine the odds? <br />Introducing the Poker Odds
+              Calculator.
+            </div>
+          </div>
+        </div>
+          <div class="clc-game__inner">
+            <label @click="chontype(4)" class="clc-game__selector"
+              :class="typeplo==4?'clc-game__selector_active':'aa'">
+              <input type="radio" name="game-type" value="clc-omaha" autocomplete="off" />
+              PLO4
+            </label>
+            <label @click="chontype(5)" class="clc-game__selector" :class="typeplo==5?'clc-game__selector_active':''">
+              <input type="radio" name="game-type" value="clc-omaha-5" autocomplete="off" />
+              PLO5
+            </label>
+            <label @click="chontype(6)" class="clc-game__selector" :class="typeplo==6?'clc-game__selector_active':''">
+              <input type="radio" name="game-type" value="clc-omaha-6" autocomplete="off" />
+              PLO6
+            </label>
+          </div>
+        </div>
+     
+        <section class="clc-field">
+
+          <div class="clc-field__inner">
+            <div class="clc-splash">
+              <div class="clc-splash__lens"></div>
+              <div class="clc-notify">
+                <svg class="clc-notify__icon">
+                  <!-- <use href="./nimg/calc-icons.svg#rotate"></use> -->
+                </svg>
+                <div class="clc-notify__text">
+                  To use the calculator, put your device in a horizontal
+                  position
+                </div>
+                <div class="clc-notify__cards">
+                  <div class="clc-notify__cards-group">
+                    <div class="clc-card clc_AD"></div>
+                    <div class="clc-card clc_AS"></div>
+                    <div class="clc-card clc_8C"></div>
+                  </div>
+                  <div class="clc-notify__cards-group">
+                    <div class="clc-card clc_unknown"></div>
+                    <div class="clc-card clc_unknown"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="clc-table" :class="divClass">
+              <div class="clc-table__top">
+                <div class="clc-group clc-group_4">
+
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr4" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(4,item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del" viewBox="0 0 20 20" fill="none">
+                      <g opacity="0.9">
+                        <circle cx="10" cy="10" r="10" fill="white" />
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                          d="M10 8.58582L7.00003 5.58582L5.58582 7.00003L8.58582 10L5.58582 13L7.00003 14.4142L10 11.4142L13 14.4142L14.4142 13L11.4142 10L14.4142 7.00003L13 5.58582L10 8.58582Z"
+                          fill="black" />
+                      </g>
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats" :style="result4 && result4.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result4.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result3.win || '0' }}%</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="clc-group clc-group_5">
+
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr5" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(5,item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del">
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> --> 
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats" :style="result5 && result5.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result5.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result5.win || '0' }}%</span>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="clc-group clc-group_6">
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr6" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(6,item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del">
+                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats" :style="result6 && result6.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result6.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result6.win || '0' }}%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clc-group clc-group_7">
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr7" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(7,item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del">
+                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats" :style="result7 && result7.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result7.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result7.win || '0' }}%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clc-group clc-group_8">
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr8" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(8,item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del">
+                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats" :style="result8 && result8.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result8.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result8.win || '0' }}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clc-table__mid">
+                <div class="clc-table__group-wrap">
+                  <div class="clc-group clc-group_3">
+                    <div class="clc-group__cards">
+                      <div v-for="(item, index) in arr3" :key="index" class="clc-card"
+                        :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                        @click="choosebai(3,item,index)"></div>
+                      <!-- <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div> -->
+                      <svg class="clc-del">
+                         <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      </svg>
+                    </div>
+                    <div class="clc-group__stats"
+                      :style="result3 && result3.status? 'display : block' : 'display: none'">
+                      <div class="clc-group__top-row">
+                        <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                          <rect width="12" height="2" fill="#666666" />
+                          <rect y="6" width="12" height="2" fill="#666666" />
+                        </svg>
+                        <span class="ties">{{ result3.ties || '0' }}%</span>
+
+                      </div>
+                      <div class="clc-group__bot-row clc-group__bot-row">
+                        <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                          <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                          <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span class="wins">{{ result3.win || '0' }}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="clc-center-table">
+                  <div class="clc-center-table__part" id="firstPart">
+                    <div v-for="(item, index) in flop" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebaiflop(item,index)"></div>
+                    <!-- 
+                    <div  class="clc-card clc_null"></div>
+                    <div class="clc-card clc_null"></div>
+                    <div class="clc-card clc_null"></div> -->
+                  </div>
+                  <div class="clc-center-table__part" id="secondPart">
+                    <!-- choosebaiturnriver -->
+                    <div v-for="(item, index) in turn_river" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebaiturnriver(item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                    <div class="clc-card clc_null"></div> -->
+                  </div>
+                  <div @click="resetcomu()" class="clc-center-table__reset-wrap">
+                    <svg
+                        class="clc-center-table__reset"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                      >
+                        <g opacity="0.9">
+                          <circle cx="10" cy="10" r="10" fill="white" />
+                          <path
+                            d="M9.85 7.75C9.85 7.81067 9.88655 7.86536 9.9426 7.88858C9.99865 7.9118 10.0632 7.89897 10.1061 7.85607L13.1061 4.85607C13.1646 4.79749 13.1646 4.70251 13.1061 4.64393L10.1061 1.64393C10.0632 1.60103 9.99865 1.5882 9.9426 1.61142C9.88655 1.63464 9.85 1.68933 9.85 1.75V3.85179C6.52153 3.93137 3.85 6.6523 3.85 10C3.85 11.2072 4.2038 12.3299 4.80332 13.2753C4.82771 13.3138 4.86825 13.3391 4.91351 13.3441C4.95878 13.3491 5.00386 13.3333 5.03607 13.3011L6.13107 12.2061C6.17802 12.1591 6.18851 12.0869 6.15687 12.0285C5.83136 11.4281 5.65 10.7327 5.65 10C5.65 7.65054 7.51959 5.7318 9.85 5.65255V7.75ZM15.1967 6.72467C15.1723 6.68621 15.1317 6.66091 15.0865 6.65591C15.0412 6.6509 14.9961 6.66673 14.9639 6.69893L13.8689 7.79393C13.8225 7.84033 13.8117 7.91148 13.8421 7.9696C14.1618 8.57987 14.35 9.26863 14.35 10C14.35 12.3495 12.4804 14.2682 10.15 14.3475V12.25C10.15 12.1893 10.1135 12.1346 10.0574 12.1114C10.0014 12.0882 9.93683 12.101 9.89393 12.1439L6.89393 15.1439C6.83536 15.2025 6.83536 15.2975 6.89393 15.3561L9.89393 18.3561C9.93683 18.399 10.0014 18.4118 10.0574 18.3886C10.1135 18.3654 10.15 18.3107 10.15 18.25V16.1482C13.4785 16.0686 16.15 13.3477 16.15 10C16.15 8.79275 15.7962 7.67007 15.1967 6.72467Z"
+                            fill="black"
+                            stroke="black"
+                            stroke-width="0.3"
+                            stroke-linejoin="round"
+                          />
+                        </g>
+                      </svg>
+                  </div>
+                </div>
+                <div class="clc-table__group-wrap">
+                  <div class="clc-group clc-group_9">
+                    <div class="clc-group__cards">
+                      <div v-for="(item, index) in arr9" :key="index" class="clc-card"
+                        :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                        @click="choosebai(9,item,index)"></div>
+                      <!-- <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div>
+                        <div class="clc-card clc_null"></div> -->
+                      <svg class="clc-del">
+                         <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      </svg>
+                    </div>
+                    <div class="clc-group__stats"
+                      :style="result9 && result9.status? 'display : block' : 'display: none'">
+                      <div class="clc-group__top-row">
+                        <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                          <rect width="12" height="2" fill="#666666" />
+                          <rect y="6" width="12" height="2" fill="#666666" />
+                        </svg>
+                        <span class="ties">{{ result9.ties || '0' }}%</span>
+                      </div>
+                      <div class="clc-group__bot-row">
+                        <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                          <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                          <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span class="wins">{{ result9.win || '0' }}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="clc-table__bot">
+                <div class="clc-group clc-group_2">
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr2" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(2,item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del">
+                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats" :style="result2 && result2.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result2.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result2.win || '0' }}%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clc-group clc-group_own">
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr1" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(1,item,index)"></div>
+                    <!-- <div class="clc-card clc_unknown"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del">
+                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats" :style="result1 && result1.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result1.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result1.win || '0' }}%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="clc-group clc-group_10">
+                  <div class="clc-group__cards">
+                    <div v-for="(item, index) in arr10" :key="index" class="clc-card"
+                      :class="item =='unknow'?'clc_unknown':item==false?  'clc_null': 'clc_'+item"
+                      @click="choosebai(10,item,index)"></div>
+                    <!-- <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div>
+                      <div class="clc-card clc_null"></div> -->
+                    <svg class="clc-del">
+                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                    </svg>
+                  </div>
+                  <div class="clc-group__stats"
+                    :style="result10 && result10.status? 'display : block' : 'display: none'">
+                    <div class="clc-group__top-row">
+                      <svg class="clc-group__equal" viewBox="0 0 12 8" fill="none">
+                        <rect width="12" height="2" fill="#666666" />
+                        <rect y="6" width="12" height="2" fill="#666666" />
+                      </svg>
+                      <span class="ties">{{ result10.ties || '0' }}%</span>
+                    </div>
+                    <div class="clc-group__bot-row clc-group__bot-row">
+                      <svg class="clc-check" viewBox="0 0 16 16" fill="none">
+                        <circle cx="8" cy="8" r="8" fill="#ffffff" />
+                        <path d="M4 8.5L7 11L11.5 5" stroke="#0f8181" stroke-width="2" stroke-linecap="round" />
+                      </svg>
+                      <span class="wins">{{ result10.win || '0' }}%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <svg class="clc-field__reset">
+                <!-- <use href="./nimg/calc-icons.svg#reset"></use> -->
+              </svg>
+              <div class="clc-field__share">
+                <div class="clc-share-tooltip">
+                  <div class="clc-share-tooltip__text">
+                    Ссылка скопирована
+                  </div>
+                  <svg class="clc-share-tooltip__icon">
+                    <!-- <use href="./nimg/calc-icons.svg#copy"></use> -->
+                  </svg>
+                </div>
+                <svg>
+                  <!-- <use href="./nimg/calc-icons.svg#share"></use> -->
+                </svg>
+              </div>
+              <div class="clc-field__share-desktop">
+                <div class="clc-share-tooltip">
+                  <div class="clc-share-tooltip__text">
+                    Ссылка скопирована
+                  </div>
+                  <svg class="clc-share-tooltip__icon">
+                    <!-- <use href="./nimg/calc-icons.svg#copy"></use> -->
+                  </svg>
+                </div>
+                <svg>
+                  <!-- <use href="./nimg/calc-icons.svg#share-desk"></use> -->
+                </svg>
+              </div>
+              <svg class="clc-field__settings">
+                <!-- <use href="./nimg/calc-icons.svg#settings"></use> -->
+              </svg>
+              <svg class="clc-field__screen">
+                <!-- <use href="./nimg/calc-icons.svg#fullscreen"></use> -->
+              </svg>
+              <svg @click="resettatca()" class="clc-reset-desktop" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="20" fill="white" />
+                <g clip-path="url(#clip0_461_4056)">
+                  <path
+                    d="M20 14V17L24 13L20 9V12C15.58 12 12 15.58 12 20C12 21.57 12.46 23.03 13.24 24.26L14.7 22.8C14.25 21.97 14 21.01 14 20C14 16.69 16.69 14 20 14ZM26.76 15.74L25.3 17.2C25.74 18.04 26 18.99 26 20C26 23.31 23.31 26 20 26V23L16 27L20 31V28C24.42 28 28 24.42 28 20C28 18.43 27.54 16.97 26.76 15.74Z"
+                    fill="black" />
+                </g>
+                <defs>
+                  <clipPath id="clip0_461_4056">
+                    <rect width="24" height="24" fill="white" transform="translate(8 8)" />
+                  </clipPath>
+                </defs>
+              </svg>
+              <div class="clc-counter">
+                <svg @click="decrementplayer()" class="clc-counter__decrement" width="60" height="60"
+                  viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                  <g>
+                    <circle cx="30" cy="30" r="30" fill="white" stroke="black" />
+                    <g clip-path="url(#clip0)">
+                      <path d="M40.5 31.5H19.5V28.5H40.5V31.5Z" fill="black" />
+                    </g>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0">
+                      <rect x="12" y="12" width="36" height="36" />
+                    </clipPath>
+                  </defs>
+                </svg>
+                <div class="clc-counter__persons">
+                  <svg class="clc-counter__person-icon" viewBox="0 0 24 24" fill="none" opacity="0.4">
+                    <path
+                      d="M12 12C15.315 12 18 9.315 18 6C18 2.685 15.315 0 12 0C8.685 0 6 2.685 6 6C6 9.315 8.685 12 12 12ZM12 15C7.995 15 0 17.01 0 21V24H24V21C24 17.01 16.005 15 12 15Z"
+                      fill="white" />
+                  </svg>
+                  <div class="clc-counter__digit">{{players}}</div>
+                </div>
+                <svg @click="incrementplayer()" class="clc-counter__increment" viewBox="0 0 60 60" fill="none">
+                  <g>
+                    <circle cx="30" cy="30" r="30" fill="white" />
+                    <path d="M40.5 31.5H31.5V40.5H28.5V31.5H19.5V28.5H28.5V19.5H31.5V28.5H40.5V31.5Z" fill="black" />
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <div class="clc-deck" :class="open?'clc-deck_active':''">
+              <svg @click="backlai()" class="clc-deck__back" viewBox="0 0 24 24" fill="none">
+                <path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="white" />
+              </svg>
+              <div class="clc-small">
+                <div class="clc-suit">
+                  <!-- clc-card_faded -->
+                  <div v-for="(item, index) in arrbai4" :key="index" @click="chonbai(item)" class="clc-card"
+                    :class="listdug.includes(item)? 'clc-card_faded '+'clc_' +item  : 'clc_' +item"></div>
+                  <!-- <div @click="chonbai('AS')" class="clc-card clc_AS"></div>
+                    <div @click="chonbai('KS')" class="clc-card clc_KS"></div>
+                    <div @click="chonbai('QS')" class="clc-card clc_QS"></div>
+                    <div @click="chonbai('JS')" class="clc-card clc_JS"></div>
+                    <div @click="chonbai('TS')" class="clc-card clc_TS"></div>
+                    <div @click="chonbai('9S')" class="clc-card clc_9S"></div>
+                    <div @click="chonbai('8S')" class="clc-card clc_8S"></div>
+                    <div @click="chonbai('7S')" class="clc-card clc_7S"></div>
+                    <div @click="chonbai('6S')" class="clc-card clc_6S"></div>
+                    <div @click="chonbai('5S')" class="clc-card clc_5S"></div>
+                    <div @click="chonbai('4S')" class="clc-card clc_4S"></div>
+                    <div @click="chonbai('3S')" class="clc-card clc_3S"></div>
+                    <div @click="chonbai('2S')" class="clc-card clc_2S"></div> -->
+                </div>
+                <div class="clc-suit">
+                  <div v-for="(item, index) in arrbai3" :key="index" @click="chonbai(item)" class="clc-card"
+                    :class="listdug.includes(item)? 'clc-card_faded '+'clc_' +item  : 'clc_' +item"></div>
+                  <!-- <div @click="chonbai('AC')" class="clc-card clc_AC"></div>
+                    <div @click="chonbai('KC')" class="clc-card clc_KC"></div>
+                    <div @click="chonbai('QC')" class="clc-card clc_QC"></div>
+                    <div @click="chonbai('JC')" class="clc-card clc_JC"></div>
+                    <div @click="chonbai('TC')" class="clc-card clc_TC"></div>
+                    <div @click="chonbai('9C')" class="clc-card clc_9C"></div>
+                    <div @click="chonbai('8C')" class="clc-card clc_8C"></div>
+                    <div @click="chonbai('7C')" class="clc-card clc_7C"></div>
+                    <div @click="chonbai('6C')" class="clc-card clc_6C"></div>
+                    <div @click="chonbai('5C')" class="clc-card clc_5C"></div>
+                    <div @click="chonbai('4C')" class="clc-card clc_4C"></div>
+                    <div @click="chonbai('3C')" class="clc-card clc_3C"></div>
+                    <div @click="chonbai('2C')" class="clc-card clc_2C"></div> -->
+                </div>
+                <div class="clc-suit">
+                  <div v-for="(item, index) in arrbai2" :key="index" @click="chonbai(item)" class="clc-card"
+                    :class="listdug.includes(item)? 'clc-card_faded '+'clc_' +item  : 'clc_' +item"></div>
+                  <!-- <div @click="chonbai('AD')" class="clc-card clc_AD"></div>
+                    <div @click="chonbai('KD')" class="clc-card clc_KD"></div>
+                    <div @click="chonbai('QD')" class="clc-card clc_QD"></div>
+                    <div @click="chonbai('JD')" class="clc-card clc_JD"></div>
+                    <div @click="chonbai('TD')" class="clc-card clc_TD"></div>
+                    <div @click="chonbai('9D')" class="clc-card clc_9D"></div>
+                    <div @click="chonbai('8D')" class="clc-card clc_8D"></div>
+                    <div @click="chonbai('7D')" class="clc-card clc_7D"></div>
+                    <div @click="chonbai('6D')" class="clc-card clc_6D"></div>
+                    <div @click="chonbai('5D')" class="clc-card clc_5D"></div>
+                    <div @click="chonbai('4D')" class="clc-card clc_4D"></div>
+                    <div @click="chonbai('3D')" class="clc-card clc_3D"></div>
+                    <div @click="chonbai('2D')" class="clc-card clc_2D"></div> -->
+                </div>
+                <div class="clc-suit">
+                  <div v-for="(item, index) in arrbai1" :key="index" @click="chonbai(item)" class="clc-card"
+                    :class="listdug.includes(item)? 'clc-card_faded '+'clc_' +item  : 'clc_' +item"></div>
+
+                  <!-- 
+                    <div @click="chonbai('AH')" class="clc-card clc_AH"></div>
+                    <div @click="chonbai('KH')" class="clc-card clc_KH"></div>
+                    <div @click="chonbai('QH')" class="clc-card clc_QH"></div>
+                    <div @click="chonbai('JH')" class="clc-card clc_JH"></div>
+                    <div @click="chonbai('TH')" class="clc-card clc_TH"></div>
+                    <div @click="chonbai('9H')" class="clc-card clc_9H"></div>
+                    <div @click="chonbai('8H')" class="clc-card clc_8H"></div>
+                    <div @click="chonbai('7H')" class="clc-card clc_7H"></div>
+                    <div @click="chonbai('6H')" class="clc-card clc_6H"></div>
+                    <div @click="chonbai('5H')" class="clc-card clc_5H"></div>
+                    <div @click="chonbai('4H')" class="clc-card clc_4H"></div>
+                    <div @click="chonbai('3H')" class="clc-card clc_3H"></div>
+                    <div @click="chonbai('2H')" class="clc-card clc_2H"></div> -->
+                </div>
+              </div>
+            </div>
+            <!-- <div class="clc-settings">
+              <svg class="clc-settings__back">
+                <use href="./nimg/calc-icons.svg#back"></use>
+              </svg>
+              <div class="clc-settings__count">
+                <svg class="clc-settings__decrement">
+                  <use href="./nimg/calc-icons.svg#minus"></use>
+                </svg>
+                <div class="clc-settings__persons">
+                  <svg class="clc-settings__person-icon">
+                    <use href="./nimg/calc-icons.svg#person"></use>
+                  </svg>
+                  <div class="clc-settings__digit">6</div>
+                </div>
+                <svg class="clc-settings__increment">
+                  <use href="./nimg/calc-icons.svg#plus"></use>
+                </svg>From GipsyTeam
+              </div>
+            </div> -->
+          </div>
+        </section>
+       
+      </main>
+    </div>
+  </div>
+
+  <script type="module">
+    import PokerHandEvaluator from "https://cdn.skypack.dev/poker-hand-evaluator";
+    const { createApp } = Vue;
+
+    createApp({
+      // clc-table clc-table clc-omaha-6 clc-table_5 clc-table_6 clc-omaha  clc-table clc-table_6 clc-omaha-5 // clc-table clc-table_6 clc-omaha-6
+      data() {
+        return {
+          title: "Chào mừng đến với VueJS!",
+          count: 0,
+          open:false,
+          loading: true,
+          players: 4,
+          typeplo: 4,
+          flop: [false, false, false],
+          turn_river: [false, false],
+          load: false,
+          playcurrent: 1,
+          // clc-card_faded
+          listdug: [],
+          arrbai1: [
+            "AH",
+            "KH",
+            "QH",
+            "JH",
+            "TH",
+            "9H",
+            "8H",
+            "7H",
+            "6H",
+            "5H",
+            "4H",
+            "3H",
+            "2H",
+          ],
+          arrbai2: [
+            "AD",
+            "KD",
+            "QD",
+            "JD",
+            "TD",
+            "9D",
+            "8D",
+            "7D",
+            "6D",
+            "5D",
+            "4D",
+            "3D",
+            "2D",
+          ],
+          arrbai3: [
+            "AC",
+            "KC",
+            "QC",
+            "JC",
+            "TC",
+            "9C",
+            "8C",
+            "7C",
+            "6C",
+            "5C",
+            "4C",
+            "3C",
+            "2C",
+          ],
+          arrbai4: [
+            "AS",
+            "KS",
+            "QS",
+            "JS",
+            "TS",
+            "9S",
+            "8S",
+            "7S",
+            "6S",
+            "5S",
+            "4S",
+            "3S",
+            "2S",
+          ],
+          labai: [],
+
+          arr1: ["unknow", false, false, false, false, false],
+          arr2: [false, false, false, false, false, false],
+          arr3: [false, false, false, false, false, false],
+          arr4: [false, false, false, false, false, false],
+          arr5: [false, false, false, false, false, false],
+          arr6: [false, false, false, false, false, false],
+          arr7: [false, false, false, false, false, false],
+          arr8: [false, false, false, false, false, false],
+          arr9: [false, false, false, false, false, false],
+          arr10: [false, false, false, false, false, false],
+          result1: {},
+          result2: {},
+          result3: {},
+          result4: {},
+          result5: {},
+          result6: {},
+          result7: {},
+          result8: {},
+          result9: {},
+          result10: {},
+        };
+      },
+
+      computed: {
+        divClass() {
+          let text = this.typeplo == 5 ? "-5" : this.typeplo == 6 ? "-6" : "";
+          let songuoi = "clc-table_" + this.players;
+          return "clc-table " + songuoi + " clc-omaha" + text;
+        },
+      },
+      mounted() {
+        // Giả lập load
+        setTimeout(() => {
+          document.getElementById('page-overlay').style.display = 'none';
+        }, 1000)
+        this.labai = [...this.arrbai4, ...this.arrbai3, ...this.arrbai2, ...this.arrbai1]
+
+
+      },
+      methods: {
+        backlai(){
+          this.open = false
+        },
+        resettatca() {
+          this.arr1 = ["unknow", false, false, false, false, false]
+          this.arr2 = [false, false, false, false, false, false]
+          this.arr3 = [false, false, false, false, false, false]
+          this.arr4 = [false, false, false, false, false, false]
+          this.arr5 = [false, false, false, false, false, false]
+          this.arr6 = [false, false, false, false, false, false]
+          this.arr7 = [false, false, false, false, false, false]
+          this.arr8 = [false, false, false, false, false, false]
+          this.arr9 = [false, false, false, false, false, false]
+          this.arr10 = [false, false, false, false, false, false]
+          this.flop = [false, false, false]
+          this.turn_river = [false, false]
+          this.playcurrent = 1
+          // clc-card_faded
+          this.listdug = []
+          this.result1 = {}
+          this.result2 = {}
+          this.result3 = {}
+          this.result4 = {}
+          this.result5 = {}
+          this.result6 = {}
+          this.result7 = {}
+          this.result8 = {}
+          this.result9 = {}
+          this.result10 = {}
+
+        },
+        resetcomu() {
+          this.flop =[false, false, false]
+          this.turn_river =[false, false]
+            this.filterbai();
+            this.kiemtraphantram()
+        },
+        decrementplayer() {
+          if (this.players <= 2) {
+          } else {
+            this.players = this.players - 1;
+          }
+        },
+        incrementplayer() {
+          if (this.players >= 4) {
+          } else {
+            this.players = this.players + 1;
+          }
+        },
+        filterbai() {
+          // listdug
+          let list = [];
+          for (let el of [
+            ...this.arr1,
+            ...this.arr2,
+            ...this.arr3,
+            ...this.arr4,
+            ...this.arr5,
+            ...this.arr6,
+            ...this.arr7,
+            ...this.arr8,
+            ...this.arr9,
+            ...this.arr10,
+            ...this.flop,
+            ...this.turn_river,
+          ]) {
+            if (el && el != "unknow") {
+              list.push(el);
+            }
+          }
+          this.listdug = list;
+        },
+        chonlabaicomu(data) {
+          if (this.playcurrent == 11) {
+            let count = 7;
+            let check = true;
+
+            let arr = this.flop.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+
+            if (count != 7) {
+              arr[count] = "unknow";
+            }
+
+            this.flop = arr;
+          } else {
+            let count = 7;
+            let check = true;
+
+            let arr = this.turn_river.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count != 7) {
+              arr[count] = "unknow";
+            }
+
+            this.turn_river = arr;
+          }
+          this.filterbai()
+           this.kiemtraphantram()
+        },
+
+        chonbai(data) {
+          if (this.listdug.includes(data)) {
+            return;
+          }
+          if (this.playcurrent == 11 || this.playcurrent == 12) {
+            this.chonlabaicomu(data);
+            return;
+          }
+          let plo = this.typeplo;
+          if (this.playcurrent == 1) {
+            let count = 7;
+            let check = true;
+
+            let arr = this.arr1.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr1 = arr;
+          } else if (this.playcurrent == 2) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr2.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr2 = arr;
+          } else if (this.playcurrent == 3) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr3.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr3 = arr;
+          } else if (this.playcurrent == 4) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr4.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr4 = arr;
+          } else if (this.playcurrent == 5) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr5.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr5 = arr;
+          } else if (this.playcurrent == 6) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr6.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr6 = arr;
+          } else if (this.playcurrent == 7) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr7.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr7 = arr;
+          } else if (this.playcurrent == 8) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr8.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr8 = arr;
+          } else if (this.playcurrent == 9) {
+            let count = 7;
+            let check = true;
+            let arr = this.arr9.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr9 = arr;
+          } else {
+            let count = 7;
+            let check = true;
+            let arr = this.arr10.map((e, index) => {
+              if (e === false && check) {
+                count = index;
+                check = false;
+              }
+              if (e == "unknow") {
+                return data;
+              } else {
+                return e;
+              }
+
+            });
+            // 4
+            // 0 1 2 3
+            if (count >= plo) {
+            } else {
+              arr[count] = "unknow";
+            }
+
+            this.arr10 = arr;
+          }
+          this.filterbai();
+          this.kiemtraphantram()
+        },
+        choosebaiflop(item, index) {
+           this.open = true
+          this.resetnutchon();
+          this.playcurrent = 11;
+          this.flop[index] = "unknow";
+          this.filterbai();
+            this.kiemtraphantram()
+        },
+        choosebaiturnriver(item, index) {
+           this.open = true
+          this.resetnutchon();
+          this.playcurrent = 12;
+          this.turn_river[index] = "unknow";
+          this.filterbai();
+          this.kiemtraphantram()
+        },
+        resetnutchon() {
+          if (this.playcurrent == 1) {
+            this.arr1 = this.arr1.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 2) {
+            this.arr2 = this.arr2.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 3) {
+            this.arr3 = this.arr3.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 4) {
+            this.arr4 = this.arr4.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 5) {
+            this.arr5 = this.arr5.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 6) {
+            this.arr6 = this.arr6.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 7) {
+            this.arr7 = this.arr7.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 8) {
+            this.arr8 = this.arr8.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 9) {
+            this.arr9 = this.arr9.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 11) {
+            // flop
+
+            this.flop = this.flop.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else if (this.playcurrent == 12) {
+            // turn river
+            this.turn_river = this.turn_river.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          } else {
+            this.arr10 = this.arr10.map((e) => {
+              if (e == "unknow") {
+                return false;
+              } else {
+                return e;
+              }
+            });
+          }
+        },
+        choosebai(so, item, index) {
+           this.open = true
+          this.resetnutchon();
+          this.playcurrent = so;
+
+          if (so == 1) {
+            this.arr1[index] = "unknow";
+          } else if (so == 2) {
+            this.arr2[index] = "unknow";
+          } else if (so == 3) {
+            this.arr3[index] = "unknow";
+          } else if (so == 4) {
+            this.arr4[index] = "unknow";
+          } else if (so == 5) {
+            this.arr5[index] = "unknow";
+          } else if (so == 6) {
+            this.arr6[index] = "unknow";
+          } else if (so == 7) {
+            this.arr7[index] = "unknow";
+          } else if (so == 8) {
+            this.arr8[index] = "unknow";
+          } else if (so == 9) {
+            this.arr9[index] = "unknow";
+          } else {
+            this.arr10[index] = "unknow";
+          }
+          this.filterbai();
+          this.kiemtraphantram()
+        },
+        chontype(data){
+         this.typeplo=data
+        },
+        myFunction(hand, board) {
+          let mau = false
+          for (let i = 0; i < hand.length; i++) {
+            for (let j = i + 1; j < hand.length; j++) {
+              for (let k = 0; k < board.length; k++) {
+                for (let l = k + 1; l < board.length; l++) {
+                  for (let m = l + 1; m < board.length; m++) {
+                    let currentHand = hand[i] + " " + hand[j] + " " + board[k] + " " + board[l] + " " + board[m];
+                    const evaluator = new PokerHandEvaluator(currentHand);
+                    // ✅ Mảng gồm đúng 5 lá, đúng định dạng
+
+                    /**
+                     * return 1 if it's a Win 
+                     * const myPokerHand = new PokerHand('KS KH QC AH AD');
+                    const hisPokerHand = new PokerHand('KD KC AS AH TD')
+                     * return 2 if it's a Loss
+                     * return 3 if it's a Tie
+                     */
+
+                    // 1
+                    if (mau === false) {
+                      //  laa
+                      mau = evaluator
+                    } else {
+                      let check = mau.compareWith(evaluator)
+                      if (check == 2) {
+                        mau = evaluator
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+          }
+          // const hand = "KS KH QC AH AD";
+          // const evaluator = new PokerHandEvaluator(hand);
+
+          // // ✅ Mảng gồm đúng 5 lá, đúng định dạng
+
+          // const result = evaluator.getScore();
+          // console.log(result);
+          // return result
+
+          return mau
+        },
+        kiemtra(data, sott) {
+          let solabai = this.typeplo // 4 5 6
+          let check = data.filter(e => e && e != "unknow")
+          if (check.length == solabai) {
+            return {
+              arr: check,
+              sott: sott
+            }
+          } else {
+            return false
+          }
+        },
+        pick(arr) {
+          if (arr.length === 0) return null; // hoặc throw error nếu cần
+          const index = Math.floor(Math.random() * arr.length);
+          return arr.splice(index, 1)[0];
+        },
+        tinhtylecacplay(data) {
+          let total = 5000;
+
+          for (let el of Object.entries(data)) {
+            let key = el[0]
+            let dulieu = el[1]
+            let ties = dulieu.ties
+            let win = dulieu.diem
+
+            let percent_win = (win / total) * 100;
+            let roundedPercent_win = percent_win.toFixed(2);
+            let percent_ties = (ties / total) * 100;
+            let roundedPercent_ties = percent_ties.toFixed(2);
+            let key2 = 'result' + key
+            if (this[key2]) {
+              this[key2] = {
+                win: roundedPercent_win,
+                ties: roundedPercent_ties,
+                status: true
+              }
+
+            }
+
+          }
+
+
+        },
+        tinhtoanpreflop(list) {
+
+          let data = {}
+          // this.labai
+          //  flop: [false, false, false],
+          // turn_river: [false, false],
+          let baiconlai = this.labai.filter(e => {
+            for (let el of list) {
+
+              let arr = el.arr;
+              if (arr.includes(e)) {
+                return false
+              }
+            }
+            return true
+          })
+
+          for (let el of list) {
+            let arr = el.arr;
+            let sott = el.sott;
+            data[sott] = {
+              diem: 0,
+              ties: 0,
+              key: sott,
+              hand: arr
+            }
+          }
+
+          for (let i = 1; i <= 5000; i++) {
+            let labai = baiconlai.map(e => e)
+
+            let board = [this.pick(labai), this.pick(labai), this.pick(labai), this.pick(labai), this.pick(labai)]
+            // console.log(labai,board)
+            let object = {}
+            for (let el of list) {
+              let arr = el.arr;
+              let sott = el.sott;
+              let sorce = this.myFunction(arr, board)
+              object[sott] = sorce
+
+            }
+            let data_result = Object.entries(object)
+            data_result.sort(function (a, b) {
+              let key1 = a[0]
+              let key2 = b[0]
+              let vaulue1 = a[1]
+              let vaulue2 = b[1]
+              let check = vaulue1.compareWith(vaulue2)
+              if (check == 2) {
+                return 1
+              } else {
+                return -1
+              }
+
+            });
+            let mau = data_result[0]
+            let value = mau[1]
+            let keysWithMaxValue = [mau[0]]
+            let firest = true
+            for (let el of data_result) {
+              if (firest) {
+                firest = false
+              } else {
+                let abc = el[1]
+                let check = abc.compareWith(value)
+                if (check == 3) {
+                  keysWithMaxValue.push(el[0])
+                }
+
+              }
+
+
+            }
+            if (keysWithMaxValue.length == 1) {
+              for (let el of keysWithMaxValue) {
+                data[el]['diem'] = data[el]['diem'] + 1
+              }
+            } else {
+              for (let el of keysWithMaxValue) {
+                data[el]['ties'] = data[el]['ties'] + 1
+              }
+            }
+          }
+
+          this.tinhtylecacplay(data)
+
+
+        },
+        tinhtoanflop(list) {
+
+          let data = {}
+          // this.labai
+          let baiconlai = this.labai.filter(e => {
+            if (this.flop.includes(e)) {
+              return false
+            }
+            for (let el of list) {
+              let arr = el.arr;
+              if (arr.includes(e)) {
+                return false
+              }
+            }
+            return true
+          })
+
+          for (let el of list) {
+            let arr = el.arr;
+            let sott = el.sott;
+            data[sott] = {
+              diem: 0,
+              ties: 0,
+              key: sott,
+              hand: arr
+            }
+          }
+          for (let i = 1; i <= 5000; i++) {
+            let labai = baiconlai.map(e => e)
+
+            let board = [this.flop[0], this.flop[1], this.flop[2], this.pick(labai), this.pick(labai)]
+            // console.log(labai,board)
+            let object = {}
+            for (let el of list) {
+              let arr = el.arr;
+              let sott = el.sott;
+              let sorce = this.myFunction(arr, board)
+              object[sott] = sorce
+
+            }
+            let data_result = Object.entries(object)
+            data_result.sort(function (a, b) {
+              let key1 = a[0]
+              let key2 = b[0]
+              let vaulue1 = a[1]
+              let vaulue2 = b[1]
+              let check = vaulue1.compareWith(vaulue2)
+              if (check == 2) {
+                return 1
+              } else {
+                return -1
+              }
+
+            });
+            let mau = data_result[0]
+            let value = mau[1]
+            let keysWithMaxValue = [mau[0]]
+            let firest = true
+            for (let el of data_result) {
+              if (firest) {
+                firest = false
+              } else {
+                let abc = el[1]
+                let check = abc.compareWith(value)
+                if (check == 3) {
+                  keysWithMaxValue.push(el[0])
+                }
+
+              }
+
+
+            }
+            if (keysWithMaxValue.length == 1) {
+              for (let el of keysWithMaxValue) {
+                data[el]['diem'] = data[el]['diem'] + 1
+              }
+            } else {
+              for (let el of keysWithMaxValue) {
+                data[el]['ties'] = data[el]['ties'] + 1
+              }
+            }
+          }
+
+          this.tinhtylecacplay(data)
+
+        },
+        tinhtoanturn(list) {
+          let data = {}
+          // this.labai
+          let baiconlai = this.labai.filter(e => {
+            if (this.flop.includes(e) || this.turn_river[0] == e) {
+              return false
+            }
+            for (let el of list) {
+              let arr = el.arr;
+              if (arr.includes(e)) {
+                return false
+              }
+            }
+            return true
+          })
+
+          for (let el of list) {
+            let arr = el.arr;
+            let sott = el.sott;
+            data[sott] = {
+              diem: 0,
+              ties: 0,
+              key: sott,
+              hand: arr
+            }
+          }
+          for (let i = 1; i <= 5000; i++) {
+            let labai = baiconlai.map(e => e)
+
+            let board = [this.flop[0], this.flop[1], this.flop[2], this.turn_river[0], this.pick(labai)]
+            // console.log(labai,board)
+            let object = {}
+            for (let el of list) {
+              let arr = el.arr;
+              let sott = el.sott;
+              let sorce = this.myFunction(arr, board)
+              object[sott] = sorce
+
+            }
+            let data_result = Object.entries(object)
+            data_result.sort(function (a, b) {
+              let key1 = a[0]
+              let key2 = b[0]
+              let vaulue1 = a[1]
+              let vaulue2 = b[1]
+              let check = vaulue1.compareWith(vaulue2)
+              if (check == 2) {
+                return 1
+              } else {
+                return -1
+              }
+
+            });
+            let mau = data_result[0]
+            let value = mau[1]
+            let keysWithMaxValue = [mau[0]]
+            let firest = true
+            for (let el of data_result) {
+              if (firest) {
+                firest = false
+              } else {
+                let abc = el[1]
+                let check = abc.compareWith(value)
+                if (check == 3) {
+                  keysWithMaxValue.push(el[0])
+                }
+
+              }
+
+
+            }
+            if (keysWithMaxValue.length == 1) {
+              for (let el of keysWithMaxValue) {
+                data[el]['diem'] = data[el]['diem'] + 1
+              }
+            } else {
+              for (let el of keysWithMaxValue) {
+                data[el]['ties'] = data[el]['ties'] + 1
+              }
+            }
+          }
+
+          this.tinhtylecacplay(data)
+
+        },
+        tinhtoanriver(list) {
+           let data = {}
+            for (let el of list) {
+            let arr = el.arr;
+            let sott = el.sott;
+            data[sott] = {
+              diem: 0,
+              ties: 0,
+              key: sott,
+              hand: arr
+            }
+          }
+          let board = [this.flop[0], this.flop[1], this.flop[2], this.turn_river[0], this.turn_river[1]]
+          let object = {}
+       
+          for (let el of list) {
+            let arr = el.arr;
+            let sott = el.sott;
+            let sorce = this.myFunction(arr, board)
+            object[sott] = sorce
+
+          }
+          let data_result = Object.entries(object)
+          data_result.sort(function (a, b) {
+            let key1 = a[0]
+            let key2 = b[0]
+            let vaulue1 = a[1]
+            let vaulue2 = b[1]
+            let check = vaulue1.compareWith(vaulue2)
+            if (check == 2) {
+              return 1
+            } else {
+              return -1
+            }
+
+          });
+          let mau = data_result[0]
+          let value = mau[1]
+          let keysWithMaxValue = [mau[0]]
+          let firest = true
+          for (let el of data_result) {
+            if (firest) {
+              firest = false
+            } else {
+              let abc = el[1]
+              let check = abc.compareWith(value)
+              if (check == 3) {
+                keysWithMaxValue.push(el[0])
+              }
+
+            }
+
+
+          }
+          if (keysWithMaxValue.length == 1) {
+            for (let el of keysWithMaxValue) {
+              data[el]['diem'] = data[el]['diem'] + 1
+            }
+          } else {
+            for (let el of keysWithMaxValue) {
+              data[el]['ties'] = data[el]['ties'] + 1
+            }
+          }
+            let total = 1;
+
+          for (let el of Object.entries(data)) {
+            let key = el[0]
+            let dulieu = el[1]
+            let ties = dulieu.ties
+            let win = dulieu.diem
+
+            let percent_win = (win / total) * 100;
+            let roundedPercent_win = percent_win.toFixed(2);
+            let percent_ties = (ties / total) * 100;
+            let roundedPercent_ties = percent_ties.toFixed(2);
+            let key2 = 'result' + key
+            if (this[key2]) {
+              this[key2] = {
+                win: roundedPercent_win,
+                ties: roundedPercent_ties,
+                status: true
+              }
+
+            }
+
+          }
+           
+        },
+        kiemtraphantram() {
+          let list = []
+          for (let i = 1; i <= 10; i++) {
+            let a = this['arr' + i]
+            let kiem = this.kiemtra(a, i)
+            if (kiem && kiem.arr) {
+              list.push(kiem)
+            } else {
+              this['result' + i] = {}
+
+            }
+
+          }
+          if (list.length >= 2) {
+            //  đủ dk tính toán
+            let checkflop = this.flop.filter(e => e && e != "unknow")
+            if (checkflop.length == 3) {
+              let checkturn = this.turn_river.filter(e => e && e != "unknow")
+              if (checkturn.length > 0) {
+                if (checkturn.length == 2) {
+                  this.tinhtoanriver(list)
+                } else {
+
+                  if (this.turn_river[0] && this.turn_river[0] != "unknow") {
+                    this.tinhtoanturn(list)
+                  } else {
+                    this.tinhtoanflop(list)
+                  }
+                }
+
+              } else {
+                this.tinhtoanflop(list)
+              }
+
+            } else {
+              this.tinhtoanpreflop(list)
+            }
+
+
+          }
+
+        },
+      },
+    }).mount("#app");
+
+  </script>
 </body>
+
 </html>
