@@ -520,7 +520,7 @@ html {
   transition: all .3s;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-del {
     right: calc(-2vw - 8px);
     width: clamp(13px, 2vw, 20px);
@@ -558,7 +558,7 @@ html {
   overflow: hidden;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-field__inner {
     display: flex;
     flex-direction: column;
@@ -578,7 +578,7 @@ html {
   }
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-field_ios {
     padding-bottom: calc(clamp(12px, 2vmin, 5vmin) + 12px);
   }
@@ -594,7 +594,7 @@ html {
   cursor: pointer;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-field__screen {
     right: 6vmin;
     bottom: 6vmin;
@@ -618,7 +618,7 @@ html {
   cursor: pointer;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-field__share {
     right: 6vmin;
     bottom: 18vmin;
@@ -672,7 +672,7 @@ html {
   cursor: pointer;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-field__reset {
     bottom: 19vmin;
     left: 6vmin;
@@ -700,7 +700,7 @@ html {
   }
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-field__settings {
     bottom: 6vmin;
     left: 6vmin;
@@ -716,7 +716,7 @@ html {
   cursor: pointer;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-field__close {
     right: 6vmin;
     bottom: 6vmin;
@@ -762,7 +762,7 @@ html {
   background-color: rgba(0, 0, 0, .6);
 }
 
-@media screen  {/*and (orientation: landscape)*/
+@media screen and (orientation: landscape) {
   .clc-splash {
     display: none;
   }
@@ -823,7 +823,7 @@ html {
   }
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-table {
     display: flex;
     position: initial;
@@ -1273,7 +1273,7 @@ html {
   cursor: pointer;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-card {
     width: clamp(25px, 5vw, 56px);
   }
@@ -1387,7 +1387,7 @@ html {
 
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-center-table {
     padding: 3.5% 5%;
   }
@@ -1457,7 +1457,7 @@ html {
   transition: all .2s;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-deck {
     display: flex;
     position: absolute;
@@ -1522,7 +1522,7 @@ html {
   background-color: #003026;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-game {
     display: unset;
   }
@@ -1829,7 +1829,7 @@ input[type='radio']:checked + .clc-game__selector {
   flex-direction: column;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-small {
     gap: 3vmin;
     margin-top: 10vh;
@@ -1850,7 +1850,7 @@ input[type='radio']:checked + .clc-game__selector {
   width: clamp(8px, 6vmin, 52px);
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-small .clc-card {
     width: clamp(8px, 5vw, 52px);
   }
@@ -1877,7 +1877,7 @@ input[type='radio']:checked + .clc-game__selector {
   justify-content: space-between;
 }
 
-@media screen and (max-width: 64em)  {/*and (orientation: landscape)*/
+@media screen and (max-width: 64em) and (orientation: landscape) {
   .clc-suit {
     gap: 2vmin;
   }
