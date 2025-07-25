@@ -114,21 +114,20 @@
           </div>
         </div>
         <div class="clc-game">
-           <div class="clc-header clc-header_mobile">
-          <div class="clc-header__inner">
-            <div class="clc-header__title">
-              Omaha Odds Calculator 
-            </div>
-            <div class="clc-header__text">
-              <!-- Why is calculating equity and outs important in poker? How can
+          <div class="clc-header clc-header_mobile">
+            <div class="clc-header__inner">
+              <div class="clc-header__title">
+                Omaha Odds Calculator
+              </div>
+              <div class="clc-header__text">
+                <!-- Why is calculating equity and outs important in poker? How can
               we determine the odds? <br />Introducing the Poker Odds
               Calculator. -->
+              </div>
             </div>
           </div>
-        </div>
           <div class="clc-game__inner">
-            <label @click="chontype(4)" class="clc-game__selector"
-              :class="typeplo==4?'clc-game__selector_active':'aa'">
+            <label @click="chontype(4)" class="clc-game__selector" :class="typeplo==4?'clc-game__selector_active':'aa'">
               <input type="radio" name="game-type" value="clc-omaha" autocomplete="off" />
               PLO4
             </label>
@@ -142,7 +141,7 @@
             </label>
           </div>
         </div>
-     
+
         <section class="clc-field">
 
           <div class="clc-field__inner">
@@ -223,7 +222,7 @@
                       <div class="clc-card clc_null"></div>
                       <div class="clc-card clc_null"></div> -->
                     <svg class="clc-del">
-                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> --> 
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                     </svg>
                   </div>
                   <div class="clc-group__stats" :style="result5 && result5.status? 'display : block' : 'display: none'">
@@ -256,7 +255,7 @@
                       <div class="clc-card clc_null"></div>
                       <div class="clc-card clc_null"></div> -->
                     <svg class="clc-del">
-                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                     </svg>
                   </div>
                   <div class="clc-group__stats" :style="result6 && result6.status? 'display : block' : 'display: none'">
@@ -288,7 +287,7 @@
                       <div class="clc-card clc_null"></div>
                       <div class="clc-card clc_null"></div> -->
                     <svg class="clc-del">
-                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                     </svg>
                   </div>
                   <div class="clc-group__stats" :style="result7 && result7.status? 'display : block' : 'display: none'">
@@ -320,7 +319,7 @@
                       <div class="clc-card clc_null"></div>
                       <div class="clc-card clc_null"></div> -->
                     <svg class="clc-del">
-                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                     </svg>
                   </div>
                   <div class="clc-group__stats" :style="result8 && result8.status? 'display : block' : 'display: none'">
@@ -355,7 +354,7 @@
                         <div class="clc-card clc_null"></div>
                         <div class="clc-card clc_null"></div> -->
                       <svg class="clc-del">
-                         <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                        <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                       </svg>
                     </div>
                     <div class="clc-group__stats"
@@ -397,22 +396,14 @@
                     <div class="clc-card clc_null"></div> -->
                   </div>
                   <div @click="resetcomu()" class="clc-center-table__reset-wrap">
-                    <svg
-                        class="clc-center-table__reset"
-                        viewBox="0 0 20 20"
-                        fill="none"
-                      >
-                        <g opacity="0.9">
-                          <circle cx="10" cy="10" r="10" fill="white" />
-                          <path
-                            d="M9.85 7.75C9.85 7.81067 9.88655 7.86536 9.9426 7.88858C9.99865 7.9118 10.0632 7.89897 10.1061 7.85607L13.1061 4.85607C13.1646 4.79749 13.1646 4.70251 13.1061 4.64393L10.1061 1.64393C10.0632 1.60103 9.99865 1.5882 9.9426 1.61142C9.88655 1.63464 9.85 1.68933 9.85 1.75V3.85179C6.52153 3.93137 3.85 6.6523 3.85 10C3.85 11.2072 4.2038 12.3299 4.80332 13.2753C4.82771 13.3138 4.86825 13.3391 4.91351 13.3441C4.95878 13.3491 5.00386 13.3333 5.03607 13.3011L6.13107 12.2061C6.17802 12.1591 6.18851 12.0869 6.15687 12.0285C5.83136 11.4281 5.65 10.7327 5.65 10C5.65 7.65054 7.51959 5.7318 9.85 5.65255V7.75ZM15.1967 6.72467C15.1723 6.68621 15.1317 6.66091 15.0865 6.65591C15.0412 6.6509 14.9961 6.66673 14.9639 6.69893L13.8689 7.79393C13.8225 7.84033 13.8117 7.91148 13.8421 7.9696C14.1618 8.57987 14.35 9.26863 14.35 10C14.35 12.3495 12.4804 14.2682 10.15 14.3475V12.25C10.15 12.1893 10.1135 12.1346 10.0574 12.1114C10.0014 12.0882 9.93683 12.101 9.89393 12.1439L6.89393 15.1439C6.83536 15.2025 6.83536 15.2975 6.89393 15.3561L9.89393 18.3561C9.93683 18.399 10.0014 18.4118 10.0574 18.3886C10.1135 18.3654 10.15 18.3107 10.15 18.25V16.1482C13.4785 16.0686 16.15 13.3477 16.15 10C16.15 8.79275 15.7962 7.67007 15.1967 6.72467Z"
-                            fill="black"
-                            stroke="black"
-                            stroke-width="0.3"
-                            stroke-linejoin="round"
-                          />
-                        </g>
-                      </svg>
+                    <svg class="clc-center-table__reset" viewBox="0 0 20 20" fill="none">
+                      <g opacity="0.9">
+                        <circle cx="10" cy="10" r="10" fill="white" />
+                        <path
+                          d="M9.85 7.75C9.85 7.81067 9.88655 7.86536 9.9426 7.88858C9.99865 7.9118 10.0632 7.89897 10.1061 7.85607L13.1061 4.85607C13.1646 4.79749 13.1646 4.70251 13.1061 4.64393L10.1061 1.64393C10.0632 1.60103 9.99865 1.5882 9.9426 1.61142C9.88655 1.63464 9.85 1.68933 9.85 1.75V3.85179C6.52153 3.93137 3.85 6.6523 3.85 10C3.85 11.2072 4.2038 12.3299 4.80332 13.2753C4.82771 13.3138 4.86825 13.3391 4.91351 13.3441C4.95878 13.3491 5.00386 13.3333 5.03607 13.3011L6.13107 12.2061C6.17802 12.1591 6.18851 12.0869 6.15687 12.0285C5.83136 11.4281 5.65 10.7327 5.65 10C5.65 7.65054 7.51959 5.7318 9.85 5.65255V7.75ZM15.1967 6.72467C15.1723 6.68621 15.1317 6.66091 15.0865 6.65591C15.0412 6.6509 14.9961 6.66673 14.9639 6.69893L13.8689 7.79393C13.8225 7.84033 13.8117 7.91148 13.8421 7.9696C14.1618 8.57987 14.35 9.26863 14.35 10C14.35 12.3495 12.4804 14.2682 10.15 14.3475V12.25C10.15 12.1893 10.1135 12.1346 10.0574 12.1114C10.0014 12.0882 9.93683 12.101 9.89393 12.1439L6.89393 15.1439C6.83536 15.2025 6.83536 15.2975 6.89393 15.3561L9.89393 18.3561C9.93683 18.399 10.0014 18.4118 10.0574 18.3886C10.1135 18.3654 10.15 18.3107 10.15 18.25V16.1482C13.4785 16.0686 16.15 13.3477 16.15 10C16.15 8.79275 15.7962 7.67007 15.1967 6.72467Z"
+                          fill="black" stroke="black" stroke-width="0.3" stroke-linejoin="round" />
+                      </g>
+                    </svg>
                   </div>
                 </div>
                 <div class="clc-table__group-wrap">
@@ -428,7 +419,7 @@
                         <div class="clc-card clc_null"></div>
                         <div class="clc-card clc_null"></div> -->
                       <svg class="clc-del">
-                         <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                        <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                       </svg>
                     </div>
                     <div class="clc-group__stats"
@@ -464,7 +455,7 @@
                       <div class="clc-card clc_null"></div>
                       <div class="clc-card clc_null"></div> -->
                     <svg class="clc-del">
-                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                     </svg>
                   </div>
                   <div class="clc-group__stats" :style="result2 && result2.status? 'display : block' : 'display: none'">
@@ -496,7 +487,7 @@
                       <div class="clc-card clc_null"></div>
                       <div class="clc-card clc_null"></div> -->
                     <svg class="clc-del">
-                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                     </svg>
                   </div>
                   <div class="clc-group__stats" :style="result1 && result1.status? 'display : block' : 'display: none'">
@@ -528,7 +519,7 @@
                       <div class="clc-card clc_null"></div>
                       <div class="clc-card clc_null"></div> -->
                     <svg class="clc-del">
-                       <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
+                      <!-- <use href="./nimg/calc-icons.svg#clc-del"></use> -->
                     </svg>
                   </div>
                   <div class="clc-group__stats"
@@ -550,8 +541,10 @@
                   </div>
                 </div>
               </div>
-              <svg class="clc-field__reset">
-                <!-- <use href="./nimg/calc-icons.svg#reset"></use> -->
+              <svg @click="resettatca()" class="clc-field__reset" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 6V9L16 5L12 1V4C7.58 4 4 7.58 4 12C4 13.57 4.46 15.03 5.24 16.26L6.7 14.8C6.25 13.97 6 13.01 6 12C6 8.69 8.69 6 12 6ZM18.76 7.74L17.3 9.2C17.74 10.04 18 10.99 18 12C18 15.31 15.31 18 12 18V15L8 19L12 23V20C16.42 20 20 16.42 20 12C20 10.43 19.54 8.97 18.76 7.74Z"
+                  fill="white" />
               </svg>
               <div class="clc-field__share">
                 <div class="clc-share-tooltip">
@@ -579,8 +572,10 @@
                   <!-- <use href="./nimg/calc-icons.svg#share-desk"></use> -->
                 </svg>
               </div>
-              <svg class="clc-field__settings">
-                <!-- <use href="./nimg/calc-icons.svg#settings"></use> -->
+              <svg @click="opensetting()" class="clc-field__settings" viewBox="0 0 20 20" fill="none">
+                <path
+                  d="M17.1401 10.94C17.1801 10.64 17.2001 10.33 17.2001 10C17.2001 9.68003 17.1801 9.36002 17.1301 9.06002L19.1601 7.48002C19.3401 7.34002 19.3901 7.07002 19.2801 6.87002L17.3601 3.55002C17.2401 3.33002 16.9901 3.26002 16.7701 3.33002L14.3801 4.29002C13.8801 3.91002 13.3501 3.59002 12.7601 3.35002L12.4001 0.810024C12.3601 0.570024 12.1601 0.400024 11.9201 0.400024H8.08011C7.84011 0.400024 7.65011 0.570024 7.61011 0.810024L7.25011 3.35002C6.66011 3.59002 6.12011 3.92002 5.63011 4.29002L3.24011 3.33002C3.02011 3.25002 2.77011 3.33002 2.65011 3.55002L0.74011 6.87002C0.62011 7.08002 0.66011 7.34002 0.86011 7.48002L2.89011 9.06002C2.84011 9.36002 2.80011 9.69002 2.80011 10C2.80011 10.31 2.82011 10.64 2.87011 10.94L0.84011 12.52C0.66011 12.66 0.61011 12.93 0.72011 13.13L2.64011 16.45C2.76011 16.67 3.01011 16.74 3.23011 16.67L5.62011 15.71C6.12011 16.09 6.65011 16.41 7.24011 16.65L7.60011 19.19C7.65011 19.43 7.84011 19.6 8.08011 19.6H11.9201C12.1601 19.6 12.3601 19.43 12.3901 19.19L12.7501 16.65C13.3401 16.41 13.8801 16.09 14.3701 15.71L16.7601 16.67C16.9801 16.75 17.2301 16.67 17.3501 16.45L19.2701 13.13C19.3901 12.91 19.3401 12.66 19.1501 12.52L17.1401 10.94ZM10.0001 13.6C8.02011 13.6 6.40011 11.98 6.40011 10C6.40011 8.02002 8.02011 6.40002 10.0001 6.40002C11.9801 6.40002 13.6001 8.02002 13.6001 10C13.6001 11.98 11.9801 13.6 10.0001 13.6Z"
+                  fill="white" />
               </svg>
               <svg class="clc-field__screen">
                 <!-- <use href="./nimg/calc-icons.svg#fullscreen"></use> -->
@@ -707,28 +702,43 @@
                 </div>
               </div>
             </div>
-            <!-- <div class="clc-settings">
-              <svg class="clc-settings__back">
-                <use href="./nimg/calc-icons.svg#back"></use>
+            <div class="clc-settings" :class="openset?'clc-settings_active':''">
+              <svg @click="tatsetting()" class="clc-settings__back"  viewBox="0 0 24 24" fill="none">
+                <path d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z" fill="white"/>
               </svg>
               <div class="clc-settings__count">
-                <svg class="clc-settings__decrement">
-                  <use href="./nimg/calc-icons.svg#minus"></use>
+                <svg @click="decrementplayer()" class="clc-settings__decrement" viewBox="0 0 60 60" fill="none">
+                  <g opacity="0.4">
+                    <circle cx="30" cy="30" r="30" fill="white" />
+                    <g clip-path="url(#clip0_14_36791)">
+                      <path d="M40.5 31.5H19.5V28.5H40.5V31.5Z" fill="black" />
+                    </g>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_14_36791">
+                      <rect width="36" height="36" fill="white" transform="translate(12 12)" />
+                    </clipPath>
+                  </defs>
                 </svg>
                 <div class="clc-settings__persons">
-                  <svg class="clc-settings__person-icon">
-                    <use href="./nimg/calc-icons.svg#person"></use>
+                  <svg class="clc-settings__person-icon" viewBox="0 0 24 24" fill="none" opacity="0.4">
+                    <path
+                      d="M12 12C15.315 12 18 9.315 18 6C18 2.685 15.315 0 12 0C8.685 0 6 2.685 6 6C6 9.315 8.685 12 12 12ZM12 15C7.995 15 0 17.01 0 21V24H24V21C24 17.01 16.005 15 12 15Z"
+                      fill="white" />
                   </svg>
-                  <div class="clc-settings__digit">6</div>
+                  <div class="clc-settings__digit">{{players}}</div>
                 </div>
-                <svg class="clc-settings__increment">
-                  <use href="./nimg/calc-icons.svg#plus"></use>
-                </svg>From GipsyTeam
+                <svg  @click="incrementplayer()"  class="clc-settings__increment" viewBox="0 0 60 60" fill="none">
+                  <g opacity="0.4">
+                    <circle cx="30" cy="30" r="30" fill="white" />
+                    <path d="M40.5 31.5H31.5V40.5H28.5V31.5H19.5V28.5H28.5V19.5H31.5V28.5H40.5V31.5Z" fill="black" />
+                  </g>
+                </svg>
               </div>
-            </div> -->
+            </div>
           </div>
         </section>
-       
+
       </main>
     </div>
   </div>
@@ -743,7 +753,8 @@
         return {
           title: "Chào mừng đến với VueJS!",
           count: 0,
-          open:false,
+          open: false,
+          openset: false,
           loading: true,
           players: 4,
           typeplo: 4,
@@ -855,7 +866,10 @@
 
       },
       methods: {
-        backlai(){
+        tatsetting() {
+          this.openset = false
+        },
+        backlai() {
           this.open = false
         },
         resettatca() {
@@ -887,10 +901,10 @@
 
         },
         resetcomu() {
-          this.flop =[false, false, false]
-          this.turn_river =[false, false]
-            this.filterbai();
-            this.kiemtraphantram()
+          this.flop = [false, false, false]
+          this.turn_river = [false, false]
+          this.filterbai();
+          this.kiemtraphantram()
         },
         decrementplayer() {
           if (this.players <= 2) {
@@ -977,9 +991,11 @@
             this.turn_river = arr;
           }
           this.filterbai()
-           this.kiemtraphantram()
+          this.kiemtraphantram()
         },
-
+        opensetting() {
+          this.openset = true
+        },
         chonbai(data) {
           if (this.listdug.includes(data)) {
             return;
@@ -1225,15 +1241,15 @@
           this.kiemtraphantram()
         },
         choosebaiflop(item, index) {
-           this.open = true
+          this.open = true
           this.resetnutchon();
           this.playcurrent = 11;
           this.flop[index] = "unknow";
           this.filterbai();
-            this.kiemtraphantram()
+          this.kiemtraphantram()
         },
         choosebaiturnriver(item, index) {
-           this.open = true
+          this.open = true
           this.resetnutchon();
           this.playcurrent = 12;
           this.turn_river[index] = "unknow";
@@ -1343,7 +1359,7 @@
           }
         },
         choosebai(so, item, index) {
-           this.open = true
+          this.open = true
           this.resetnutchon();
           this.playcurrent = so;
 
@@ -1371,8 +1387,8 @@
           this.filterbai();
           this.kiemtraphantram()
         },
-        chontype(data){
-         this.typeplo=data
+        chontype(data) {
+          this.typeplo = data
         },
         myFunction(hand, board) {
           let mau = false
@@ -1724,8 +1740,8 @@
 
         },
         tinhtoanriver(list) {
-           let data = {}
-            for (let el of list) {
+          let data = {}
+          for (let el of list) {
             let arr = el.arr;
             let sott = el.sott;
             data[sott] = {
@@ -1737,7 +1753,7 @@
           }
           let board = [this.flop[0], this.flop[1], this.flop[2], this.turn_river[0], this.turn_river[1]]
           let object = {}
-       
+
           for (let el of list) {
             let arr = el.arr;
             let sott = el.sott;
@@ -1786,7 +1802,7 @@
               data[el]['ties'] = data[el]['ties'] + 1
             }
           }
-            let total = 1;
+          let total = 1;
 
           for (let el of Object.entries(data)) {
             let key = el[0]
@@ -1809,7 +1825,7 @@
             }
 
           }
-           
+
         },
         kiemtraphantram() {
           let list = []
